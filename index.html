@@ -1,0 +1,83 @@
+<html>
+  <head>
+    <script
+      src="https://player.live-video.net/1.31.0/amazon-ivs-player.min.js"
+      integrity="sha384-9MmI7GOxrX/NoiImx6WN0lvANY5UwnR3NJ/GdC6b4FMYXP1aRxPG+S24ZwIL6pLB"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+      integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="./css/main.css" />
+    <script>
+      (function (h, o, u, n, d) {
+        h = h[d] = h[d] || {
+          q: [],
+          onReady: function (c) {
+            h.q.push(c);
+          },
+        };
+        d = o.createElement(u);
+        d.async = 1;
+        d.src = n;
+        n = o.getElementsByTagName(u)[0];
+        n.parentNode.insertBefore(d, n);
+      })(
+        window,
+        document,
+        "script",
+        "https://www.datadoghq-browser-agent.com/us5/v5/datadog-rum.js",
+        "DD_RUM"
+      );
+      window.DD_RUM.onReady(function () {
+        window.DD_RUM.init({
+          clientToken: "INSERT-YOUR-DATADOG-APP-CLIENT-TOKEN-HERE", // Replace with your Datadog RUM app client token
+          applicationId: "INSERT-YOUR-DATADOG-RUM-APP-ID-HERE", // Replace with your Datadog RUM app ID
+          // `site` refers to the Datadog site parameter of your organization
+          // see https://docs.datadoghq.com/getting_started/site/
+          site: "us1.datadoghq.com",
+          service: "my-ivs-player-app",
+          env: "dev",
+          // Specify a version number to identify the deployed version of your application in Datadog
+          version: "1.0.0",
+          sessionSampleRate: 100,
+          sessionReplaySampleRate: 0,
+          startSessionReplayRecordingManually: true,
+          trackUserInteractions: true,
+          trackResources: true,
+          trackLongTasks: true,
+          defaultPrivacyLevel: "mask-user-input",
+          allowFallbackToLocalStorage: true,
+        });
+      });
+    </script>
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="inner">
+        <div class="dropdown-wrapper">
+          <label class="label-text" for="playback_url"
+            >Sample Playback Channels</label
+          >
+          <select id="playback_url">
+            <option>Select Channel</option>
+          </select>
+          <button type="button" id="playVideo">Click Play</button>
+        </div>
+        <div class="spacer"></div>
+        <div class="player-wrapper">
+          <div class="aspect-spacer"></div>
+          <div class="pos-absolute full-width full-height top-0">
+            <video id="video-player" class="el-player" playsinline></video>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="./js/config.js"></script>
+    <script src="./js/qos_sdk.js"></script>
+    <script src="./js/ivs.js"></script>
+  </body>
+</html>
