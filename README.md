@@ -17,6 +17,29 @@ env: "REPLACE WITH YOUR ENV",                     // Replace with your own envir
 
 Open `index.html` in a browser. Select a channel to play from the dropdown and click play. Each channel is a continually playing test stream sourced from [here](https://docs.datadoghq.com/real_user_monitoring/browser/).
 
+## Creating the dashboard
+
+After running the code, to create your dashboard, import this [JSON file](https://github.com/aws-samples/unlocking-playback-insights-with-amazon-ivs-and-datadog/blob/main/datadog-amazon-ivs-playback-analytics-dashboard.json). It is an exported copy of a dashboard that will graph the following metrics.
+
+- Time to Video
+- Average Playback Latency
+- Unique Viewers by Rendition
+- Buffer Empties per Minute Watched
+- Average Buffer Time
+- Errors Per Channel
+- Average Buffer Time
+- Buffer Empties Per Minute Watched (BEMW)
+- Average Viewing Time
+- Unique Views
+- Unique Viewer Count Per Top 10 Channels
+- Unique Viewers by Client Platform
+- Percent Time Buffering by Channel Watched
+- Unique Views by Region
+
+Follow this [get started guide](https://docs.datadoghq.com/dashboards/#get-started) from Datadog to create a new dashboard. Once you have created a new dashboard, you will be taken to a blank canvas to add dashboard widgets. Click “Configure” in the upper right hand corner select “Import Dashboard JSON”. From there, upload this [JSON file](https://github.com/aws-samples/unlocking-playback-insights-with-amazon-ivs-and-datadog/blob/main/datadog-amazon-ivs-playback-analytics-dashboard.json).
+
+![Importing a JSON file to create a dashboard in Datadog](datadog-dashboard-import-json.png)
+
 # Key Functionality
 
 - **Initialization**: The initializeQoS function in `js/qos_sdk.js` is called to set up the QoS monitoring. It attaches event listeners to the IVS player for various [player states](https://aws.github.io/amazon-ivs-player-docs/1.28.0/web/enums/PlayerState.html) (`READY`, `BUFFERING`, `PLAYING`, `IDLE`, `ENDED`) and [player events](https://aws.github.io/amazon-ivs-player-docs/1.28.0/web/enums/PlayerEventType.html) (`ERROR`, `INITIALIZED`, `QUALITY_CHANGED`).
