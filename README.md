@@ -22,19 +22,16 @@ Open `index.html` in a browser. Select a channel to play from the dropdown and c
 After running the code, to create your dashboard, import this [JSON file](https://github.com/aws-samples/unlocking-playback-insights-with-amazon-ivs-and-datadog/blob/main/datadog-amazon-ivs-playback-analytics-dashboard.json). It is an exported copy of a dashboard that will graph the following metrics.
 
 - Time to Video
-- Average Playback Latency
-- Unique Viewers by Rendition
-- Buffer Empties per Minute Watched
-- Average Buffer Time
-- Errors Per Channel
-- Average Buffer Time
-- Buffer Empties Per Minute Watched (BEMW)
-- Average Viewing Time
-- Unique Views
-- Unique Viewer Count Per Top 10 Channels
-- Unique Viewers by Client Platform
+- Playback Latency Percentiles
+- Unique Users by Rendition
+- Errors Per Minute Per Channel
+- Rebuffering Percentage
+- Average playback time
+- Unique users
+- Unique User Count Per Top 10 Channels
+- Unique Users by Client Platform
 - Percent Time Buffering by Channel Watched
-- Unique Views by Region
+- Unique Users by Region
 
 Follow this [get started guide](https://docs.datadoghq.com/dashboards/#get-started) from Datadog to create a new dashboard. Once you have created a new dashboard, you will be taken to a blank canvas to add dashboard widgets. Click “Configure” in the upper right hand corner select “Import Dashboard JSON”. From there, upload this [JSON file](https://github.com/aws-samples/unlocking-playback-insights-with-amazon-ivs-and-datadog/blob/main/datadog-amazon-ivs-playback-analytics-dashboard.json).
 
