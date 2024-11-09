@@ -1,5 +1,5 @@
 {
-  "title": "Amazon IVS Playback Analytics - Blog",
+  "title": "Amazon IVS Playback Analytics",
   "description": "[[suggested_dashboards]]",
   "widgets": [
     {
@@ -10,31 +10,17 @@
         "title_align": "left",
         "show_legend": true,
         "legend_layout": "auto",
-        "legend_columns": [
-          "avg",
-          "min",
-          "max",
-          "value",
-          "sum"
-        ],
+        "legend_columns": ["avg", "min", "max", "value", "sum"],
         "type": "timeseries",
         "requests": [
           {
-            "formulas": [
-              {
-                "formula": "query1"
-              }
-            ],
+            "formulas": [{ "formula": "query1" }],
             "queries": [
               {
                 "name": "query1",
                 "data_source": "rum",
-                "search": {
-                  "query": "@type:action"
-                },
-                "indexes": [
-                  "*"
-                ],
+                "search": { "query": "@type:action" },
+                "indexes": ["*"],
                 "group_by": [],
                 "compute": {
                   "aggregation": "avg",
@@ -54,17 +40,12 @@
           }
         ]
       },
-      "layout": {
-        "x": 0,
-        "y": 0,
-        "width": 4,
-        "height": 2
-      }
+      "layout": { "x": 0, "y": 0, "width": 4, "height": 2 }
     },
     {
       "id": 7845861700718706,
       "definition": {
-        "title": "Unique Views By Region",
+        "title": "Unique Users By Region",
         "title_size": "16",
         "title_align": "left",
         "time": {},
@@ -75,12 +56,8 @@
               {
                 "name": "query1",
                 "data_source": "rum",
-                "search": {
-                  "query": "@type:action"
-                },
-                "indexes": [
-                  "*"
-                ],
+                "search": { "query": "@type:action" },
+                "indexes": ["*"],
                 "group_by": [
                   {
                     "facet": "@geo.country_iso_code",
@@ -101,98 +78,115 @@
               }
             ],
             "response_format": "scalar",
-            "formulas": [
-              {
-                "formula": "query1"
-              }
-            ],
+            "formulas": [{ "formula": "query1" }],
             "sort": {
               "count": 10,
-              "order_by": [
-                {
-                  "type": "formula",
-                  "index": 0,
-                  "order": "desc"
-                }
-              ]
+              "order_by": [{ "type": "formula", "index": 0, "order": "desc" }]
             }
           }
         ],
-        "style": {
-          "palette": "hostmap_blues",
-          "palette_flip": false
-        },
-        "view": {
-          "focus": "WORLD"
-        }
+        "style": { "palette": "hostmap_blues", "palette_flip": false },
+        "view": { "focus": "WORLD" }
       },
-      "layout": {
-        "x": 4,
-        "y": 0,
-        "width": 4,
-        "height": 4
-      }
+      "layout": { "x": 4, "y": 0, "width": 4, "height": 4 }
     },
     {
-      "id": 1009542102468304,
+      "id": 4300826088281502,
       "definition": {
-        "title": "Buffer Empties Per Minute Watched",
+        "title": "Average Playback Time",
         "title_size": "16",
         "title_align": "left",
-        "show_legend": true,
-        "legend_layout": "auto",
-        "legend_columns": [
-          "avg",
-          "min",
-          "max",
-          "value",
-          "sum"
-        ],
-        "time": {},
-        "type": "timeseries",
+        "type": "query_value",
         "requests": [
           {
-            "formulas": [
-              {
-                "formula": "query1"
-              },
-              {
-                "formula": "query2"
-              },
-              {
-                "formula": "query1 / (query2 / 1000)"
-              }
-            ],
+            "response_format": "scalar",
             "queries": [
               {
                 "name": "query1",
                 "data_source": "rum",
-                "search": {
-                  "query": "@type:action"
-                },
-                "indexes": [
-                  "*"
-                ],
-                "group_by": [],
-                "compute": {
-                  "aggregation": "avg",
-                  "metric": "@context.buffering_count"
-                },
-                "storage": "hot"
-              },
-              {
-                "name": "query2",
-                "data_source": "rum",
-                "search": {
-                  "query": "@type:action"
-                },
-                "indexes": [
-                  "*"
-                ],
+                "search": { "query": "@type:action" },
+                "indexes": ["*"],
                 "group_by": [],
                 "compute": {
                   "aggregation": "avg",
                   "metric": "@context.playing_time_ms"
+                },
+                "storage": "hot"
+              }
+            ],
+            "formulas": [{ "formula": "query1" }]
+          }
+        ],
+        "autoscale": true,
+        "precision": 2,
+        "timeseries_background": { "type": "area" }
+      },
+      "layout": { "x": 8, "y": 0, "width": 4, "height": 2 }
+    },
+    {
+      "id": 85158418918,
+      "definition": {
+        "title": "Playback Latency Percentiles",
+        "title_size": "16",
+        "title_align": "left",
+        "show_legend": false,
+        "type": "distribution",
+        "xaxis": {
+          "min": "75",
+          "max": "auto",
+          "include_zero": false,
+          "scale": "linear"
+        },
+        "yaxis": {
+          "scale": "linear",
+          "min": "auto",
+          "max": "auto",
+          "include_zero": true
+        },
+        "requests": [
+          {
+            "request_type": "histogram",
+            "query": {
+              "name": "query1",
+              "data_source": "rum",
+              "search": { "query": "@type:action @context.live_latency_ms:*" },
+              "indexes": ["*"],
+              "group_by": [],
+              "compute": {
+                "aggregation": "avg",
+                "metric": "@context.live_latency_ms"
+              },
+              "storage": "hot"
+            }
+          }
+        ]
+      },
+      "layout": { "x": 0, "y": 2, "width": 4, "height": 2 }
+    },
+    {
+      "id": 4652311958760434,
+      "definition": {
+        "title": "Unique Users",
+        "title_size": "16",
+        "title_align": "left",
+        "show_legend": true,
+        "legend_layout": "auto",
+        "legend_columns": ["avg", "min", "max", "value", "sum"],
+        "time": { "type": "live", "unit": "day", "value": 1 },
+        "type": "timeseries",
+        "requests": [
+          {
+            "formulas": [{ "formula": "query1" }],
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "rum",
+                "search": { "query": "@type:action @context.user_id:*" },
+                "indexes": ["*"],
+                "group_by": [],
+                "compute": {
+                  "aggregation": "cardinality",
+                  "metric": "@context.user_id"
                 },
                 "storage": "hot"
               }
@@ -204,119 +198,16 @@
               "line_type": "solid",
               "line_width": "normal"
             },
-            "display_type": "line"
+            "display_type": "bars"
           }
         ]
       },
-      "layout": {
-        "x": 8,
-        "y": 0,
-        "width": 4,
-        "height": 2
-      }
-    },
-    {
-      "id": 7934785518373796,
-      "definition": {
-        "title": "Average Playback Latency",
-        "title_size": "16",
-        "title_align": "left",
-        "time": {},
-        "type": "query_value",
-        "requests": [
-          {
-            "formulas": [
-              {
-                "formula": "query1"
-              }
-            ],
-            "queries": [
-              {
-                "name": "query1",
-                "data_source": "rum",
-                "search": {
-                  "query": "@type:action"
-                },
-                "indexes": [
-                  "*"
-                ],
-                "group_by": [],
-                "compute": {
-                  "aggregation": "avg",
-                  "metric": "@context.live_latency_ms"
-                },
-                "storage": "hot"
-              }
-            ],
-            "response_format": "scalar"
-          }
-        ],
-        "autoscale": true,
-        "precision": 2,
-        "timeseries_background": {
-          "type": "area"
-        }
-      },
-      "layout": {
-        "x": 0,
-        "y": 2,
-        "width": 4,
-        "height": 2
-      }
-    },
-    {
-      "id": 4300826088281502,
-      "definition": {
-        "title": "Average Viewing Time",
-        "title_size": "16",
-        "title_align": "left",
-        "time": {},
-        "type": "query_value",
-        "requests": [
-          {
-            "response_format": "scalar",
-            "queries": [
-              {
-                "name": "query1",
-                "data_source": "rum",
-                "search": {
-                  "query": "@type:action"
-                },
-                "indexes": [
-                  "*"
-                ],
-                "group_by": [],
-                "compute": {
-                  "aggregation": "avg",
-                  "metric": "@context.playing_time_ms"
-                },
-                "storage": "hot"
-              }
-            ],
-            "formulas": [
-              {
-                "formula": "query1"
-              }
-            ]
-          }
-        ],
-        "autoscale": true,
-        "precision": 2,
-        "timeseries_background": {
-          "type": "area"
-        }
-      },
-      "layout": {
-        "x": 8,
-        "y": 2,
-        "width": 4,
-        "height": 2
-      }
+      "layout": { "x": 8, "y": 2, "width": 4, "height": 2 }
     },
     {
       "id": 8675362983136734,
       "definition": {
-        "title": "Errors per Channel Watched",
+        "title": "Errors Per Minute Per Channel",
         "title_size": "16",
         "title_align": "left",
         "time": {},
@@ -327,12 +218,8 @@
               {
                 "name": "query1",
                 "data_source": "rum",
-                "search": {
-                  "query": "@type:action"
-                },
-                "indexes": [
-                  "*"
-                ],
+                "search": { "query": "@type:action" },
+                "indexes": ["*"],
                 "group_by": [
                   {
                     "facet": "@context.channel_watched",
@@ -353,62 +240,34 @@
               }
             ],
             "response_format": "scalar",
-            "formulas": [
-              {
-                "formula": "query1"
-              }
-            ],
+            "formulas": [{ "formula": "query1" }],
             "sort": {
               "count": 1000,
-              "order_by": [
-                {
-                  "type": "formula",
-                  "index": 0,
-                  "order": "desc"
-                }
-              ]
+              "order_by": [{ "type": "formula", "index": 0, "order": "desc" }]
             }
           }
         ],
-        "style": {
-          "display": {
-            "type": "stacked",
-            "legend": "automatic"
-          }
-        }
+        "style": { "display": { "type": "stacked", "legend": "automatic" } }
       },
-      "layout": {
-        "x": 0,
-        "y": 4,
-        "width": 4,
-        "height": 6
-      }
+      "layout": { "x": 0, "y": 4, "width": 4, "height": 6 }
     },
     {
       "id": 4893549618230884,
       "definition": {
-        "title": "Unique Viewers by Client Platform",
+        "title": "Unique Users by Client Platform",
         "title_size": "16",
         "title_align": "left",
         "time": {},
         "requests": [
           {
             "response_format": "scalar",
-            "formulas": [
-              {
-                "formula": "query1"
-              }
-            ],
+            "formulas": [{ "formula": "query1" }],
             "queries": [
               {
                 "name": "query1",
                 "data_source": "rum",
-                "search": {
-                  "query": "@type:action"
-                },
-                "indexes": [
-                  "*"
-                ],
+                "search": { "query": "@type:action" },
+                "indexes": ["*"],
                 "group_by": [
                   {
                     "facet": "@context.client_platform",
@@ -428,104 +287,24 @@
                 "storage": "hot"
               }
             ],
-            "style": {
-              "palette": "datadog16"
-            },
+            "style": { "palette": "datadog16" },
             "sort": {
               "count": 10,
-              "order_by": [
-                {
-                  "type": "formula",
-                  "index": 0,
-                  "order": "desc"
-                }
-              ]
+              "order_by": [{ "type": "formula", "index": 0, "order": "desc" }]
             }
           }
         ],
         "type": "sunburst",
-        "legend": {
-          "type": "automatic"
-        }
+        "legend": { "type": "automatic" }
       },
-      "layout": {
-        "x": 4,
-        "y": 4,
-        "width": 4,
-        "height": 4
-      }
-    },
-    {
-      "id": 4652311958760434,
-      "definition": {
-        "title": "Unique Views",
-        "title_size": "16",
-        "title_align": "left",
-        "show_legend": true,
-        "legend_layout": "auto",
-        "legend_columns": [
-          "avg",
-          "min",
-          "max",
-          "value",
-          "sum"
-        ],
-        "time": {
-          "type": "live",
-          "unit": "day",
-          "value": 1
-        },
-        "type": "timeseries",
-        "requests": [
-          {
-            "formulas": [
-              {
-                "formula": "query1"
-              }
-            ],
-            "queries": [
-              {
-                "name": "query1",
-                "data_source": "rum",
-                "search": {
-                  "query": "@type:action @context.user_id:*"
-                },
-                "indexes": [
-                  "*"
-                ],
-                "group_by": [],
-                "compute": {
-                  "aggregation": "cardinality",
-                  "metric": "@context.user_id"
-                },
-                "storage": "hot"
-              }
-            ],
-            "response_format": "timeseries",
-            "style": {
-              "palette": "dog_classic",
-              "order_by": "values",
-              "line_type": "solid",
-              "line_width": "normal"
-            },
-            "display_type": "bars"
-          }
-        ]
-      },
-      "layout": {
-        "x": 8,
-        "y": 4,
-        "width": 4,
-        "height": 2
-      }
+      "layout": { "x": 4, "y": 4, "width": 4, "height": 4 }
     },
     {
       "id": 3457981412644646,
       "definition": {
-        "title": "Unique Viewer Count Per Top 10 Channels",
+        "title": "Unique User Count Per Top 10 Channels",
         "title_size": "16",
         "title_align": "left",
-        "time": {},
         "type": "toplist",
         "requests": [
           {
@@ -533,12 +312,8 @@
               {
                 "name": "query1",
                 "data_source": "rum",
-                "search": {
-                  "query": "@type:action"
-                },
-                "indexes": [
-                  "*"
-                ],
+                "search": { "query": "@type:action" },
+                "indexes": ["*"],
                 "group_by": [
                   {
                     "facet": "@context.channel_watched",
@@ -559,42 +334,22 @@
               }
             ],
             "response_format": "scalar",
-            "formulas": [
-              {
-                "formula": "query1"
-              }
-            ],
+            "formulas": [{ "formula": "query1" }],
             "sort": {
               "count": 10,
-              "order_by": [
-                {
-                  "type": "formula",
-                  "index": 0,
-                  "order": "desc"
-                }
-              ]
+              "order_by": [{ "type": "formula", "index": 0, "order": "desc" }]
             }
           }
         ],
-        "style": {
-          "display": {
-            "type": "stacked",
-            "legend": "automatic"
-          }
-        }
+        "style": { "display": { "type": "stacked", "legend": "automatic" } }
       },
-      "layout": {
-        "x": 8,
-        "y": 6,
-        "width": 4,
-        "height": 4
-      }
+      "layout": { "x": 8, "y": 4, "width": 4, "height": 4 }
     },
     {
       "id": 2918967934649050,
       "definition": {
         "time": {},
-        "title": "Unique Viewers by Rendition",
+        "title": "Unique Users by Rendition",
         "type": "treemap",
         "requests": [
           {
@@ -603,12 +358,8 @@
               {
                 "name": "query1",
                 "data_source": "rum",
-                "search": {
-                  "query": "@type:action"
-                },
-                "indexes": [
-                  "*"
-                ],
+                "search": { "query": "@type:action" },
+                "indexes": ["*"],
                 "group_by": [
                   {
                     "facet": "@context.rendition_name",
@@ -628,74 +379,12 @@
                 "storage": "hot"
               }
             ],
-            "style": {
-              "palette": "datadog16"
-            },
-            "formulas": [
-              {
-                "formula": "query1"
-              }
-            ]
+            "style": { "palette": "datadog16" },
+            "formulas": [{ "formula": "query1" }]
           }
         ]
       },
-      "layout": {
-        "x": 4,
-        "y": 8,
-        "width": 4,
-        "height": 4
-      }
-    },
-    {
-      "id": 4738087015951854,
-      "definition": {
-        "title": "Average Buffer Time",
-        "title_size": "16",
-        "title_align": "left",
-        "time": {},
-        "type": "timeseries",
-        "requests": [
-          {
-            "formulas": [
-              {
-                "formula": "query1"
-              }
-            ],
-            "queries": [
-              {
-                "name": "query1",
-                "data_source": "rum",
-                "search": {
-                  "query": "@type:action"
-                },
-                "indexes": [
-                  "*"
-                ],
-                "group_by": [],
-                "compute": {
-                  "aggregation": "avg",
-                  "metric": "@context.buffering_time_ms"
-                },
-                "storage": "hot"
-              }
-            ],
-            "response_format": "timeseries",
-            "style": {
-              "palette": "datadog16",
-              "order_by": "values",
-              "line_type": "solid",
-              "line_width": "normal"
-            },
-            "display_type": "line"
-          }
-        ]
-      },
-      "layout": {
-        "x": 0,
-        "y": 10,
-        "width": 4,
-        "height": 2
-      }
+      "layout": { "x": 4, "y": 8, "width": 4, "height": 5 }
     },
     {
       "id": 2078049097387686,
@@ -703,7 +392,6 @@
         "title": "Percent Time Buffering by Channel Watched",
         "title_size": "16",
         "title_align": "left",
-        "time": {},
         "type": "toplist",
         "requests": [
           {
@@ -711,12 +399,8 @@
               {
                 "name": "query1",
                 "data_source": "rum",
-                "search": {
-                  "query": "@type:action"
-                },
-                "indexes": [
-                  "*"
-                ],
+                "search": { "query": "@type:action" },
+                "indexes": ["*"],
                 "group_by": [
                   {
                     "facet": "@context.channel_watched",
@@ -738,12 +422,8 @@
               {
                 "name": "query2",
                 "data_source": "rum",
-                "search": {
-                  "query": "@type:action"
-                },
-                "indexes": [
-                  "*"
-                ],
+                "search": { "query": "@type:action" },
+                "indexes": ["*"],
                 "group_by": [
                   {
                     "facet": "@context.channel_watched",
@@ -768,38 +448,79 @@
               {
                 "formula": "(query1 / 1000) / (query2 / 1000)",
                 "number_format": {
-                  "unit": {
-                    "type": "canonical_unit",
-                    "unit_name": "percent"
-                  }
+                  "unit": { "type": "canonical_unit", "unit_name": "percent" }
                 }
               }
             ],
             "sort": {
-              "order_by": [
-                {
-                  "type": "formula",
-                  "index": 0,
-                  "order": "desc"
-                }
-              ],
+              "order_by": [{ "type": "formula", "index": 0, "order": "desc" }],
               "count": 2000
             }
           }
         ],
-        "style": {
-          "display": {
-            "type": "stacked",
-            "legend": "automatic"
-          }
-        }
+        "style": { "display": { "type": "stacked", "legend": "automatic" } }
       },
-      "layout": {
-        "x": 8,
-        "y": 10,
-        "width": 4,
-        "height": 3
-      }
+      "layout": { "x": 8, "y": 8, "width": 4, "height": 3 }
+    },
+    {
+      "id": 4738087015951854,
+      "definition": {
+        "title": "Rebuffering Percentage",
+        "title_size": "16",
+        "title_align": "left",
+        "show_legend": false,
+        "legend_layout": "vertical",
+        "legend_columns": ["value"],
+        "time": { "type": "live", "unit": "minute", "value": 5 },
+        "type": "timeseries",
+        "requests": [
+          {
+            "formulas": [
+              {
+                "formula": "query1 / query2 * 100",
+                "number_format": {
+                  "unit": { "type": "canonical_unit", "unit_name": "percent" }
+                }
+              }
+            ],
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "rum",
+                "search": { "query": "@type:action" },
+                "indexes": ["*"],
+                "group_by": [],
+                "compute": {
+                  "aggregation": "sum",
+                  "metric": "@context.buffering_time_ms"
+                },
+                "storage": "hot"
+              },
+              {
+                "name": "query2",
+                "data_source": "rum",
+                "search": { "query": "@type:action" },
+                "indexes": ["*"],
+                "group_by": [],
+                "compute": {
+                  "aggregation": "sum",
+                  "metric": "@context.playing_time_ms"
+                },
+                "storage": "hot"
+              }
+            ],
+            "response_format": "timeseries",
+            "style": {
+              "palette": "datadog16",
+              "order_by": "values",
+              "line_type": "solid",
+              "line_width": "normal"
+            },
+            "display_type": "line"
+          }
+        ]
+      },
+      "layout": { "x": 0, "y": 10, "width": 4, "height": 3 }
     }
   ],
   "template_variables": [],
