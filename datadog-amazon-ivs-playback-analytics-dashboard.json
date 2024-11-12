@@ -1,5 +1,5 @@
 {
-  "title": "Amazon IVS Playback Analytics",
+  "title": "Amazon IVS Playback Analytics - Blog",
   "description": "[[suggested_dashboards]]",
   "widgets": [
     {
@@ -48,7 +48,6 @@
         "title": "Unique Users By Region",
         "title_size": "16",
         "title_align": "left",
-        "time": {},
         "type": "geomap",
         "requests": [
           {
@@ -210,7 +209,6 @@
         "title": "Errors Per Minute Per Channel",
         "title_size": "16",
         "title_align": "left",
-        "time": {},
         "type": "toplist",
         "requests": [
           {
@@ -257,7 +255,6 @@
         "title": "Unique Users by Client Platform",
         "title_size": "16",
         "title_align": "left",
-        "time": {},
         "requests": [
           {
             "response_format": "scalar",
@@ -348,7 +345,6 @@
     {
       "id": 2918967934649050,
       "definition": {
-        "time": {},
         "title": "Unique Users by Rendition",
         "type": "treemap",
         "requests": [
@@ -389,9 +385,10 @@
     {
       "id": 2078049097387686,
       "definition": {
-        "title": "Percent Time Buffering by Channel Watched",
+        "title": "Rebuffering Percentage Per Channel Watched",
         "title_size": "16",
         "title_align": "left",
+        "time": {},
         "type": "toplist",
         "requests": [
           {
@@ -446,15 +443,15 @@
             "response_format": "scalar",
             "formulas": [
               {
-                "formula": "(query1 / 1000) / (query2 / 1000)",
                 "number_format": {
                   "unit": { "type": "canonical_unit", "unit_name": "percent" }
-                }
+                },
+                "formula": "(query1 / 1000) / (query2 / 1000) * 100"
               }
             ],
             "sort": {
-              "order_by": [{ "type": "formula", "index": 0, "order": "desc" }],
-              "count": 2000
+              "count": 2000,
+              "order_by": [{ "type": "formula", "index": 0, "order": "desc" }]
             }
           }
         ],
