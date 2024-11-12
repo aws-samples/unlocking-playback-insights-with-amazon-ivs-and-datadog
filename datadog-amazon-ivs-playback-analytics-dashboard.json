@@ -1,5 +1,5 @@
 {
-  "title": "Amazon IVS Playback Analytics - Blog",
+  "title": "Amazon IVS Playback Analytics",
   "description": "[[suggested_dashboards]]",
   "widgets": [
     {
@@ -388,7 +388,6 @@
         "title": "Rebuffering Percentage Per Channel Watched",
         "title_size": "16",
         "title_align": "left",
-        "time": {},
         "type": "toplist",
         "requests": [
           {
@@ -518,6 +517,32 @@
         ]
       },
       "layout": { "x": 0, "y": 10, "width": 4, "height": 3 }
+    },
+    {
+      "id": 399416593008714,
+      "definition": {
+        "title": "IVS Player Errors",
+        "title_size": "16",
+        "title_align": "left",
+        "time": {},
+        "requests": [
+          {
+            "response_format": "event_list",
+            "query": {
+              "data_source": "issue_stream",
+              "query_string": "",
+              "indexes": []
+            },
+            "columns": [
+              { "field": "details", "width": "auto" },
+              { "field": "count", "width": "auto" },
+              { "field": "volume", "width": "auto" }
+            ]
+          }
+        ],
+        "type": "list_stream"
+      },
+      "layout": { "x": 0, "y": 13, "width": 12, "height": 3 }
     }
   ],
   "template_variables": [],
