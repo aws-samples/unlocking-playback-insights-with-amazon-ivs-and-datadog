@@ -1,1 +1,818 @@
-{"title":"Amazon IVS Playback Analytics - Blog","description":"[[suggested_dashboards]]","widgets":[{"id":4790778380924320,"definition":{"title":"Time to Video","title_size":"16","title_align":"left","show_legend":true,"legend_layout":"auto","legend_columns":["avg","min","max","value","sum"],"type":"timeseries","requests":[{"formulas":[{"formula":"query1"}],"queries":[{"name":"query1","data_source":"rum","search":{"query":"@type:action"},"indexes":["*"],"group_by":[],"compute":{"aggregation":"avg","metric":"@context.startup_latency_ms"},"storage":"hot"}],"response_format":"timeseries","style":{"palette":"dog_classic","order_by":"values","line_type":"solid","line_width":"normal"},"display_type":"line"}]},"layout":{"x":0,"y":0,"width":4,"height":2}},{"id":7845861700718706,"definition":{"title":"Unique Users By Region","title_size":"16","title_align":"left","type":"geomap","requests":[{"queries":[{"name":"query1","data_source":"rum","search":{"query":"@type:action"},"indexes":["*"],"group_by":[{"facet":"@geo.country_iso_code","limit":10,"sort":{"aggregation":"cardinality","order":"desc","metric":"@context.user_id"},"should_exclude_missing":true}],"compute":{"aggregation":"cardinality","metric":"@context.user_id"},"storage":"hot"}],"response_format":"scalar","formulas":[{"formula":"query1"}],"sort":{"count":10,"order_by":[{"type":"formula","index":0,"order":"desc"}]}}],"style":{"palette":"hostmap_blues","palette_flip":false},"view":{"focus":"WORLD"}},"layout":{"x":4,"y":0,"width":4,"height":4}},{"id":4300826088281502,"definition":{"title":"Average Playback Time","title_size":"16","title_align":"left","type":"query_value","requests":[{"response_format":"scalar","queries":[{"name":"query1","data_source":"rum","search":{"query":"@type:action"},"indexes":["*"],"group_by":[],"compute":{"aggregation":"avg","metric":"@context.playing_time_ms"},"storage":"hot"}],"formulas":[{"formula":"query1"}]}],"autoscale":true,"precision":2,"timeseries_background":{"type":"area"}},"layout":{"x":8,"y":0,"width":4,"height":2}},{"id":85158418918,"definition":{"title":"Playback Latency Percentiles","title_size":"16","title_align":"left","show_legend":false,"type":"distribution","xaxis":{"min":"75","max":"auto","include_zero":false,"scale":"linear"},"yaxis":{"scale":"linear","min":"auto","max":"auto","include_zero":true},"requests":[{"request_type":"histogram","query":{"name":"query1","data_source":"rum","search":{"query":"@type:action @context.live_latency_ms:*"},"indexes":["*"],"group_by":[],"compute":{"aggregation":"avg","metric":"@context.live_latency_ms"},"storage":"hot"}}]},"layout":{"x":0,"y":2,"width":4,"height":2}},{"id":4605854426421980,"definition":{"title":"Average Playing Time by Channel Watched","title_size":"16","title_align":"left","show_legend":true,"legend_layout":"auto","legend_columns":["avg","min","max","value","sum"],"type":"timeseries","requests":[{"formulas":[{"formula":"query1"}],"queries":[{"name":"query1","data_source":"rum","search":{"query":"@type:action"},"indexes":["*"],"group_by":[{"facet":"@context.channel_watched","limit":10,"sort":{"aggregation":"avg","order":"desc","metric":"@context.playing_time_ms"}}],"compute":{"aggregation":"avg","metric":"@context.playing_time_ms"},"storage":"hot"}],"response_format":"timeseries","style":{"palette":"dog_classic","order_by":"values","line_type":"solid","line_width":"normal"},"display_type":"bars"}]},"layout":{"x":8,"y":2,"width":4,"height":2}},{"id":8675362983136734,"definition":{"title":"Errors Per Minute Per Channel","title_size":"16","title_align":"left","type":"toplist","requests":[{"queries":[{"name":"query1","data_source":"rum","search":{"query":"@type:action"},"indexes":["*"],"group_by":[{"facet":"@context.channel_watched","limit":1000,"sort":{"aggregation":"sum","order":"desc","metric":"@context.error_count"},"should_exclude_missing":true}],"compute":{"aggregation":"sum","metric":"@context.error_count"},"storage":"hot"}],"response_format":"scalar","formulas":[{"formula":"query1"}],"sort":{"count":1000,"order_by":[{"type":"formula","index":0,"order":"desc"}]}}],"style":{"display":{"type":"stacked","legend":"automatic"}}},"layout":{"x":0,"y":4,"width":4,"height":6}},{"id":4893549618230884,"definition":{"title":"Unique Users by Client Platform","title_size":"16","title_align":"left","requests":[{"response_format":"scalar","queries":[{"name":"query1","data_source":"rum","search":{"query":"@type:action"},"indexes":["*"],"group_by":[{"facet":"@context.client_platform","limit":5,"sort":{"aggregation":"cardinality","order":"desc","metric":"@context.user_id"},"should_exclude_missing":true}],"compute":{"aggregation":"cardinality","metric":"@context.user_id"},"storage":"hot"}],"style":{"palette":"datadog16"},"formulas":[{"formula":"query1"}],"sort":{"count":10,"order_by":[{"type":"formula","index":0,"order":"desc"}]}}],"type":"sunburst","legend":{"type":"automatic"}},"layout":{"x":4,"y":4,"width":4,"height":4}},{"id":1939396026959184,"definition":{"title":"PlayTime-Correlation-TTV","title_size":"16","title_align":"left","show_legend":true,"legend_layout":"auto","legend_columns":["avg","min","max","value","sum"],"type":"timeseries","requests":[{"on_right_yaxis":true,"formulas":[{"formula":"query1"}],"queries":[{"name":"query1","data_source":"rum","search":{"query":"@type:action"},"indexes":["*"],"group_by":[{"facet":"@geo.country_iso_code","limit":10,"sort":{"aggregation":"avg","order":"desc","metric":"@context.playing_time_ms"},"should_exclude_missing":true}],"compute":{"aggregation":"avg","metric":"@context.playing_time_ms"},"storage":"hot"}],"response_format":"timeseries","style":{"palette":"dog_classic","order_by":"values","line_type":"solid","line_width":"normal"},"display_type":"bars"},{"formulas":[{"alias":"Time to Video","formula":"query0"}],"queries":[{"data_source":"metrics","name":"query0","query":"avg:rum.metric.time_to_video{*}.as_count()"}],"response_format":"timeseries","style":{"palette":"dog_classic","line_type":"solid","line_width":"normal"},"display_type":"line"}]},"layout":{"x":8,"y":4,"width":4,"height":2}},{"id":4652311958760434,"definition":{"title":"Unique Users","title_size":"16","title_align":"left","show_legend":true,"legend_layout":"auto","legend_columns":["avg","min","max","value","sum"],"time":{"type":"live","unit":"day","value":1},"type":"timeseries","requests":[{"formulas":[{"formula":"query1"}],"queries":[{"name":"query1","data_source":"rum","search":{"query":"@type:action @context.user_id:*"},"indexes":["*"],"group_by":[],"compute":{"aggregation":"cardinality","metric":"@context.user_id"},"storage":"hot"}],"response_format":"timeseries","style":{"palette":"dog_classic","order_by":"values","line_type":"solid","line_width":"normal"},"display_type":"bars"}]},"layout":{"x":8,"y":6,"width":4,"height":2}},{"id":2918967934649050,"definition":{"title":"Unique Users by Rendition","type":"treemap","requests":[{"response_format":"scalar","queries":[{"name":"query1","data_source":"rum","search":{"query":"@type:action"},"indexes":["*"],"group_by":[{"facet":"@context.rendition_name","limit":5,"sort":{"aggregation":"cardinality","order":"desc","metric":"@context.user_id"},"should_exclude_missing":true}],"compute":{"aggregation":"cardinality","metric":"@context.user_id"},"storage":"hot"}],"style":{"palette":"datadog16"},"formulas":[{"formula":"query1"}]}]},"layout":{"x":4,"y":8,"width":4,"height":5}},{"id":7862159913098806,"definition":{"title":"Time to Video and Unique Users","title_size":"16","title_align":"left","show_legend":true,"legend_layout":"auto","legend_columns":["avg","min","max","value","sum"],"time":{"type":"live","unit":"hour","value":1},"type":"timeseries","requests":[{"formulas":[{"formula":"query1"},{"formula":"query2"}],"queries":[{"name":"query1","data_source":"rum","search":{"query":"@type:action"},"indexes":["*"],"group_by":[],"compute":{"aggregation":"avg","metric":"@context.startup_latency_ms"},"storage":"hot"},{"name":"query2","data_source":"rum","search":{"query":"@type:action"},"indexes":["*"],"group_by":[],"compute":{"aggregation":"cardinality","metric":"@context.user_id"},"storage":"hot"}],"response_format":"timeseries","style":{"palette":"dog_classic","order_by":"values","line_type":"solid","line_width":"normal"},"display_type":"line"}]},"layout":{"x":8,"y":8,"width":4,"height":2}},{"id":4738087015951854,"definition":{"title":"Rebuffering Percentage","title_size":"16","title_align":"left","show_legend":false,"legend_layout":"vertical","legend_columns":["value"],"time":{"type":"live","unit":"minute","value":5},"type":"timeseries","requests":[{"formulas":[{"formula":"query1 / query2 * 100","number_format":{"unit":{"type":"canonical_unit","unit_name":"percent"}}}],"queries":[{"name":"query1","data_source":"rum","search":{"query":"@type:action"},"indexes":["*"],"group_by":[],"compute":{"aggregation":"sum","metric":"@context.buffering_time_ms"},"storage":"hot"},{"name":"query2","data_source":"rum","search":{"query":"@type:action"},"indexes":["*"],"group_by":[],"compute":{"aggregation":"sum","metric":"@context.playing_time_ms"},"storage":"hot"}],"response_format":"timeseries","style":{"palette":"datadog16","order_by":"values","line_type":"solid","line_width":"normal"},"display_type":"line"}]},"layout":{"x":0,"y":10,"width":4,"height":3}},{"id":7521785494215893,"definition":{"title":"Hours Spent by Country","title_size":"16","title_align":"left","requests":[{"queries":[{"data_source":"rum","name":"query1","search":{"query":"@type:session"},"indexes":["*"],"compute":{"aggregation":"count"},"group_by":[{"facet":"@geo.country_iso_code","limit":250,"sort":{"order":"desc","aggregation":"count"}}]}],"response_format":"scalar","style":{"palette":"datadog16"},"formulas":[{"formula":"query1"}],"sort":{"order_by":[{"type":"formula","index":0,"order":"desc"}]}}],"type":"sunburst","legend":{"type":"automatic"}},"layout":{"x":8,"y":10,"width":4,"height":4}},{"id":3457981412644646,"definition":{"title":"Unique User Count Per Top 10 Channels","title_size":"16","title_align":"left","type":"toplist","requests":[{"queries":[{"name":"query1","data_source":"rum","search":{"query":"@type:action"},"indexes":["*"],"group_by":[{"facet":"@context.channel_watched","limit":10,"sort":{"aggregation":"cardinality","order":"desc","metric":"@context.user_id"},"should_exclude_missing":true}],"compute":{"aggregation":"cardinality","metric":"@context.user_id"},"storage":"hot"}],"response_format":"scalar","formulas":[{"formula":"query1"}],"sort":{"count":10,"order_by":[{"type":"formula","index":0,"order":"desc"}]}}],"style":{"display":{"type":"stacked","legend":"automatic"}}},"layout":{"x":0,"y":13,"width":4,"height":5}},{"id":2078049097387686,"definition":{"title":"Rebuffering Percentage Per Channel Watched","title_size":"16","title_align":"left","type":"toplist","requests":[{"queries":[{"name":"query1","data_source":"rum","search":{"query":"@type:action"},"indexes":["*"],"group_by":[{"facet":"@context.channel_watched","limit":1000,"sort":{"aggregation":"sum","order":"desc","metric":"@context.buffering_time_ms"},"should_exclude_missing":true}],"compute":{"aggregation":"sum","metric":"@context.buffering_time_ms"},"storage":"hot"},{"name":"query2","data_source":"rum","search":{"query":"@type:action"},"indexes":["*"],"group_by":[{"facet":"@context.channel_watched","limit":1000,"sort":{"aggregation":"sum","order":"desc","metric":"@context.playing_time_ms"},"should_exclude_missing":true}],"compute":{"aggregation":"sum","metric":"@context.playing_time_ms"},"storage":"hot"}],"response_format":"scalar","formulas":[{"number_format":{"unit":{"type":"canonical_unit","unit_name":"percent"}},"formula":"(query1 / 1000) / (query2 / 1000) * 100"}],"sort":{"count":2000,"order_by":[{"type":"formula","index":0,"order":"desc"}]}}],"style":{"display":{"type":"stacked","legend":"automatic"}}},"layout":{"x":4,"y":13,"width":4,"height":5}},{"id":5109616305059524,"definition":{"title":"Buffering to User Correlation","title_size":"16","title_align":"left","show_legend":true,"legend_layout":"auto","legend_columns":["avg","min","max","value","sum"],"time":{"type":"live","unit":"hour","value":1},"type":"timeseries","requests":[{"formulas":[{"alias":"Average Buffering Time","formula":"query1"},{"formula":"query2"},{"alias":"Unique Users","formula":"query2 * 500"}],"queries":[{"name":"query1","data_source":"rum","search":{"query":"@type:action"},"indexes":["*"],"group_by":[],"compute":{"aggregation":"avg","metric":"@context.buffering_time_ms"},"storage":"hot"},{"name":"query2","data_source":"rum","search":{"query":"@type:action"},"indexes":["*"],"group_by":[],"compute":{"aggregation":"cardinality","metric":"@context.user_id"},"storage":"hot"}],"response_format":"timeseries","style":{"palette":"dog_classic","order_by":"values","order_reverse":false,"line_type":"solid","line_width":"normal"},"display_type":"line"}]},"layout":{"x":8,"y":14,"width":4,"height":4}},{"id":399416593008714,"definition":{"title":"IVS Player Errors","title_size":"16","title_align":"left","requests":[{"response_format":"event_list","query":{"data_source":"issue_stream","query_string":"","indexes":[]},"columns":[{"field":"details","width":"auto"},{"field":"count","width":"auto"},{"field":"volume","width":"auto"}]}],"type":"list_stream"},"layout":{"x":0,"y":18,"width":12,"height":3}}],"template_variables":[],"layout_type":"ordered","notify_list":[],"reflow_type":"fixed"}
+{
+  "title": "Amazon IVS Playback Analytics - Blog",
+  "description": "[[suggested_dashboards]]",
+  "widgets": [
+    {
+      "id": 4790778380924320,
+      "definition": {
+        "title": "Time to Video",
+        "title_size": "16",
+        "title_align": "left",
+        "show_legend": true,
+        "legend_layout": "auto",
+        "legend_columns": ["avg", "min", "max", "value", "sum"],
+        "type": "timeseries",
+        "requests": [
+          {
+            "formulas": [{ "formula": "query1" }],
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "rum",
+                "search": { "query": "@type:action" },
+                "indexes": ["*"],
+                "group_by": [],
+                "compute": {
+                  "aggregation": "avg",
+                  "metric": "@context.startup_latency_ms"
+                },
+                "storage": "hot"
+              }
+            ],
+            "response_format": "timeseries",
+            "style": {
+              "palette": "dog_classic",
+              "order_by": "values",
+              "line_type": "solid",
+              "line_width": "normal"
+            },
+            "display_type": "line"
+          }
+        ]
+      },
+      "layout": { "x": 0, "y": 0, "width": 4, "height": 2 }
+    },
+    {
+      "id": 7845861700718706,
+      "definition": {
+        "title": "Unique Users By Region",
+        "title_size": "16",
+        "title_align": "left",
+        "type": "geomap",
+        "requests": [
+          {
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "rum",
+                "search": { "query": "@type:action" },
+                "indexes": ["*"],
+                "group_by": [
+                  {
+                    "facet": "@geo.country_iso_code",
+                    "limit": 10,
+                    "sort": {
+                      "aggregation": "cardinality",
+                      "order": "desc",
+                      "metric": "@context.user_id"
+                    },
+                    "should_exclude_missing": true
+                  }
+                ],
+                "compute": {
+                  "aggregation": "cardinality",
+                  "metric": "@context.user_id"
+                },
+                "storage": "hot"
+              }
+            ],
+            "response_format": "scalar",
+            "formulas": [{ "formula": "query1" }],
+            "sort": {
+              "count": 10,
+              "order_by": [{ "type": "formula", "index": 0, "order": "desc" }]
+            }
+          }
+        ],
+        "style": { "palette": "hostmap_blues", "palette_flip": false },
+        "view": { "focus": "WORLD" }
+      },
+      "layout": { "x": 4, "y": 0, "width": 4, "height": 4 }
+    },
+    {
+      "id": 4300826088281502,
+      "definition": {
+        "title": "Average Playback Time",
+        "title_size": "16",
+        "title_align": "left",
+        "type": "query_value",
+        "requests": [
+          {
+            "response_format": "scalar",
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "rum",
+                "search": { "query": "@type:action" },
+                "indexes": ["*"],
+                "group_by": [],
+                "compute": {
+                  "aggregation": "avg",
+                  "metric": "@context.playing_time_ms"
+                },
+                "storage": "hot"
+              }
+            ],
+            "formulas": [{ "formula": "query1" }]
+          }
+        ],
+        "autoscale": true,
+        "precision": 2,
+        "timeseries_background": { "type": "area" }
+      },
+      "layout": { "x": 8, "y": 0, "width": 4, "height": 2 }
+    },
+    {
+      "id": 85158418918,
+      "definition": {
+        "title": "Playback Latency Percentiles",
+        "title_size": "16",
+        "title_align": "left",
+        "show_legend": false,
+        "type": "distribution",
+        "xaxis": {
+          "min": "75",
+          "max": "auto",
+          "include_zero": false,
+          "scale": "linear"
+        },
+        "yaxis": {
+          "scale": "linear",
+          "min": "auto",
+          "max": "auto",
+          "include_zero": true
+        },
+        "requests": [
+          {
+            "request_type": "histogram",
+            "query": {
+              "name": "query1",
+              "data_source": "rum",
+              "search": { "query": "@type:action @context.live_latency_ms:*" },
+              "indexes": ["*"],
+              "group_by": [],
+              "compute": {
+                "aggregation": "avg",
+                "metric": "@context.live_latency_ms"
+              },
+              "storage": "hot"
+            }
+          }
+        ]
+      },
+      "layout": { "x": 0, "y": 2, "width": 4, "height": 2 }
+    },
+    {
+      "id": 4605854426421980,
+      "definition": {
+        "title": "Average Playing Time by Channel Watched",
+        "title_size": "16",
+        "title_align": "left",
+        "show_legend": true,
+        "legend_layout": "auto",
+        "legend_columns": ["avg", "min", "max", "value", "sum"],
+        "type": "timeseries",
+        "requests": [
+          {
+            "formulas": [{ "formula": "query1" }],
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "rum",
+                "search": { "query": "@type:action" },
+                "indexes": ["*"],
+                "group_by": [
+                  {
+                    "facet": "@context.channel_watched",
+                    "limit": 10,
+                    "sort": {
+                      "aggregation": "avg",
+                      "order": "desc",
+                      "metric": "@context.playing_time_ms"
+                    }
+                  }
+                ],
+                "compute": {
+                  "aggregation": "avg",
+                  "metric": "@context.playing_time_ms"
+                },
+                "storage": "hot"
+              }
+            ],
+            "response_format": "timeseries",
+            "style": {
+              "palette": "dog_classic",
+              "order_by": "values",
+              "line_type": "solid",
+              "line_width": "normal"
+            },
+            "display_type": "bars"
+          }
+        ]
+      },
+      "layout": { "x": 8, "y": 2, "width": 4, "height": 2 }
+    },
+    {
+      "id": 8675362983136734,
+      "definition": {
+        "title": "Errors Per Minute Per Channel",
+        "title_size": "16",
+        "title_align": "left",
+        "type": "toplist",
+        "requests": [
+          {
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "rum",
+                "search": { "query": "@type:action" },
+                "indexes": ["*"],
+                "group_by": [
+                  {
+                    "facet": "@context.channel_watched",
+                    "limit": 1000,
+                    "sort": {
+                      "aggregation": "sum",
+                      "order": "desc",
+                      "metric": "@context.error_count"
+                    },
+                    "should_exclude_missing": true
+                  }
+                ],
+                "compute": {
+                  "aggregation": "sum",
+                  "metric": "@context.error_count"
+                },
+                "storage": "hot"
+              }
+            ],
+            "response_format": "scalar",
+            "formulas": [{ "formula": "query1" }],
+            "sort": {
+              "count": 1000,
+              "order_by": [{ "type": "formula", "index": 0, "order": "desc" }]
+            }
+          }
+        ],
+        "style": { "display": { "type": "stacked", "legend": "automatic" } }
+      },
+      "layout": { "x": 0, "y": 4, "width": 4, "height": 6 }
+    },
+    {
+      "id": 4893549618230884,
+      "definition": {
+        "title": "Unique Users by Client Platform",
+        "title_size": "16",
+        "title_align": "left",
+        "requests": [
+          {
+            "response_format": "scalar",
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "rum",
+                "search": { "query": "@type:action" },
+                "indexes": ["*"],
+                "group_by": [
+                  {
+                    "facet": "@context.client_platform",
+                    "limit": 5,
+                    "sort": {
+                      "aggregation": "cardinality",
+                      "order": "desc",
+                      "metric": "@context.user_id"
+                    },
+                    "should_exclude_missing": true
+                  }
+                ],
+                "compute": {
+                  "aggregation": "cardinality",
+                  "metric": "@context.user_id"
+                },
+                "storage": "hot"
+              }
+            ],
+            "style": { "palette": "datadog16" },
+            "formulas": [{ "formula": "query1" }],
+            "sort": {
+              "count": 10,
+              "order_by": [{ "type": "formula", "index": 0, "order": "desc" }]
+            }
+          }
+        ],
+        "type": "sunburst",
+        "legend": { "type": "automatic" }
+      },
+      "layout": { "x": 4, "y": 4, "width": 4, "height": 4 }
+    },
+    {
+      "id": 1939396026959184,
+      "definition": {
+        "title": "PlayTime-Correlation-TTV",
+        "title_size": "16",
+        "title_align": "left",
+        "show_legend": true,
+        "legend_layout": "auto",
+        "legend_columns": ["avg", "min", "max", "value", "sum"],
+        "type": "timeseries",
+        "requests": [
+          {
+            "on_right_yaxis": true,
+            "formulas": [{ "formula": "query1" }],
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "rum",
+                "search": { "query": "@type:action" },
+                "indexes": ["*"],
+                "group_by": [
+                  {
+                    "facet": "@geo.country_iso_code",
+                    "limit": 10,
+                    "sort": {
+                      "aggregation": "avg",
+                      "order": "desc",
+                      "metric": "@context.playing_time_ms"
+                    },
+                    "should_exclude_missing": true
+                  }
+                ],
+                "compute": {
+                  "aggregation": "avg",
+                  "metric": "@context.playing_time_ms"
+                },
+                "storage": "hot"
+              }
+            ],
+            "response_format": "timeseries",
+            "style": {
+              "palette": "dog_classic",
+              "order_by": "values",
+              "line_type": "solid",
+              "line_width": "normal"
+            },
+            "display_type": "bars"
+          },
+          {
+            "formulas": [{ "alias": "Time to Video", "formula": "query0" }],
+            "queries": [
+              {
+                "data_source": "metrics",
+                "name": "query0",
+                "query": "avg:rum.metric.time_to_video{*}.as_count()"
+              }
+            ],
+            "response_format": "timeseries",
+            "style": {
+              "palette": "dog_classic",
+              "line_type": "solid",
+              "line_width": "normal"
+            },
+            "display_type": "line"
+          }
+        ]
+      },
+      "layout": { "x": 8, "y": 4, "width": 4, "height": 2 }
+    },
+    {
+      "id": 4652311958760434,
+      "definition": {
+        "title": "Unique Users",
+        "title_size": "16",
+        "title_align": "left",
+        "show_legend": true,
+        "legend_layout": "auto",
+        "legend_columns": ["avg", "min", "max", "value", "sum"],
+        "time": { "type": "live", "unit": "day", "value": 1 },
+        "type": "timeseries",
+        "requests": [
+          {
+            "formulas": [{ "formula": "query1" }],
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "rum",
+                "search": { "query": "@type:action @context.user_id:*" },
+                "indexes": ["*"],
+                "group_by": [],
+                "compute": {
+                  "aggregation": "cardinality",
+                  "metric": "@context.user_id"
+                },
+                "storage": "hot"
+              }
+            ],
+            "response_format": "timeseries",
+            "style": {
+              "palette": "dog_classic",
+              "order_by": "values",
+              "line_type": "solid",
+              "line_width": "normal"
+            },
+            "display_type": "bars"
+          }
+        ]
+      },
+      "layout": { "x": 8, "y": 6, "width": 4, "height": 2 }
+    },
+    {
+      "id": 2918967934649050,
+      "definition": {
+        "title": "Unique Users by Rendition",
+        "type": "treemap",
+        "requests": [
+          {
+            "response_format": "scalar",
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "rum",
+                "search": { "query": "@type:action" },
+                "indexes": ["*"],
+                "group_by": [
+                  {
+                    "facet": "@context.rendition_name",
+                    "limit": 5,
+                    "sort": {
+                      "aggregation": "cardinality",
+                      "order": "desc",
+                      "metric": "@context.user_id"
+                    },
+                    "should_exclude_missing": true
+                  }
+                ],
+                "compute": {
+                  "aggregation": "cardinality",
+                  "metric": "@context.user_id"
+                },
+                "storage": "hot"
+              }
+            ],
+            "style": { "palette": "datadog16" },
+            "formulas": [{ "formula": "query1" }]
+          }
+        ]
+      },
+      "layout": { "x": 4, "y": 8, "width": 4, "height": 5 }
+    },
+    {
+      "id": 7862159913098806,
+      "definition": {
+        "title": "Time to Video and Unique Users",
+        "title_size": "16",
+        "title_align": "left",
+        "show_legend": true,
+        "legend_layout": "auto",
+        "legend_columns": ["avg", "min", "max", "value", "sum"],
+        "time": { "type": "live", "unit": "hour", "value": 1 },
+        "type": "timeseries",
+        "requests": [
+          {
+            "formulas": [{ "formula": "query1" }, { "formula": "query2" }],
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "rum",
+                "search": { "query": "@type:action" },
+                "indexes": ["*"],
+                "group_by": [],
+                "compute": {
+                  "aggregation": "avg",
+                  "metric": "@context.startup_latency_ms"
+                },
+                "storage": "hot"
+              },
+              {
+                "name": "query2",
+                "data_source": "rum",
+                "search": { "query": "@type:action" },
+                "indexes": ["*"],
+                "group_by": [],
+                "compute": {
+                  "aggregation": "cardinality",
+                  "metric": "@context.user_id"
+                },
+                "storage": "hot"
+              }
+            ],
+            "response_format": "timeseries",
+            "style": {
+              "palette": "dog_classic",
+              "order_by": "values",
+              "line_type": "solid",
+              "line_width": "normal"
+            },
+            "display_type": "line"
+          }
+        ]
+      },
+      "layout": { "x": 8, "y": 8, "width": 4, "height": 2 }
+    },
+    {
+      "id": 4738087015951854,
+      "definition": {
+        "title": "Rebuffering Percentage",
+        "title_size": "16",
+        "title_align": "left",
+        "show_legend": false,
+        "legend_layout": "vertical",
+        "legend_columns": ["value"],
+        "time": { "type": "live", "unit": "minute", "value": 5 },
+        "type": "timeseries",
+        "requests": [
+          {
+            "formulas": [
+              {
+                "formula": "query1 / query2 * 100",
+                "number_format": {
+                  "unit": { "type": "canonical_unit", "unit_name": "percent" }
+                }
+              }
+            ],
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "rum",
+                "search": { "query": "@type:action" },
+                "indexes": ["*"],
+                "group_by": [],
+                "compute": {
+                  "aggregation": "sum",
+                  "metric": "@context.buffering_time_ms"
+                },
+                "storage": "hot"
+              },
+              {
+                "name": "query2",
+                "data_source": "rum",
+                "search": { "query": "@type:action" },
+                "indexes": ["*"],
+                "group_by": [],
+                "compute": {
+                  "aggregation": "sum",
+                  "metric": "@context.playing_time_ms"
+                },
+                "storage": "hot"
+              }
+            ],
+            "response_format": "timeseries",
+            "style": {
+              "palette": "datadog16",
+              "order_by": "values",
+              "line_type": "solid",
+              "line_width": "normal"
+            },
+            "display_type": "line"
+          }
+        ]
+      },
+      "layout": { "x": 0, "y": 10, "width": 4, "height": 3 }
+    },
+    {
+      "id": 7521785494215893,
+      "definition": {
+        "title": "Hours Spent by Country",
+        "title_size": "16",
+        "title_align": "left",
+        "requests": [
+          {
+            "queries": [
+              {
+                "data_source": "rum",
+                "name": "query1",
+                "search": { "query": "@type:session" },
+                "indexes": ["*"],
+                "compute": { "aggregation": "count" },
+                "group_by": [
+                  {
+                    "facet": "@geo.country_iso_code",
+                    "limit": 250,
+                    "sort": { "order": "desc", "aggregation": "count" }
+                  }
+                ]
+              }
+            ],
+            "response_format": "scalar",
+            "style": { "palette": "datadog16" },
+            "formulas": [{ "formula": "query1" }],
+            "sort": {
+              "order_by": [{ "type": "formula", "index": 0, "order": "desc" }]
+            }
+          }
+        ],
+        "type": "sunburst",
+        "legend": { "type": "automatic" }
+      },
+      "layout": { "x": 8, "y": 10, "width": 4, "height": 4 }
+    },
+    {
+      "id": 3457981412644646,
+      "definition": {
+        "title": "Unique User Count Per Top 10 Channels",
+        "title_size": "16",
+        "title_align": "left",
+        "type": "toplist",
+        "requests": [
+          {
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "rum",
+                "search": { "query": "@type:action" },
+                "indexes": ["*"],
+                "group_by": [
+                  {
+                    "facet": "@context.channel_watched",
+                    "limit": 10,
+                    "sort": {
+                      "aggregation": "cardinality",
+                      "order": "desc",
+                      "metric": "@context.user_id"
+                    },
+                    "should_exclude_missing": true
+                  }
+                ],
+                "compute": {
+                  "aggregation": "cardinality",
+                  "metric": "@context.user_id"
+                },
+                "storage": "hot"
+              }
+            ],
+            "response_format": "scalar",
+            "formulas": [{ "formula": "query1" }],
+            "sort": {
+              "count": 10,
+              "order_by": [{ "type": "formula", "index": 0, "order": "desc" }]
+            }
+          }
+        ],
+        "style": { "display": { "type": "stacked", "legend": "automatic" } }
+      },
+      "layout": { "x": 0, "y": 13, "width": 4, "height": 5 }
+    },
+    {
+      "id": 2078049097387686,
+      "definition": {
+        "title": "Rebuffering Percentage Per Channel Watched",
+        "title_size": "16",
+        "title_align": "left",
+        "type": "toplist",
+        "requests": [
+          {
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "rum",
+                "search": { "query": "@type:action" },
+                "indexes": ["*"],
+                "group_by": [
+                  {
+                    "facet": "@context.channel_watched",
+                    "limit": 1000,
+                    "sort": {
+                      "aggregation": "sum",
+                      "order": "desc",
+                      "metric": "@context.buffering_time_ms"
+                    },
+                    "should_exclude_missing": true
+                  }
+                ],
+                "compute": {
+                  "aggregation": "sum",
+                  "metric": "@context.buffering_time_ms"
+                },
+                "storage": "hot"
+              },
+              {
+                "name": "query2",
+                "data_source": "rum",
+                "search": { "query": "@type:action" },
+                "indexes": ["*"],
+                "group_by": [
+                  {
+                    "facet": "@context.channel_watched",
+                    "limit": 1000,
+                    "sort": {
+                      "aggregation": "sum",
+                      "order": "desc",
+                      "metric": "@context.playing_time_ms"
+                    },
+                    "should_exclude_missing": true
+                  }
+                ],
+                "compute": {
+                  "aggregation": "sum",
+                  "metric": "@context.playing_time_ms"
+                },
+                "storage": "hot"
+              }
+            ],
+            "response_format": "scalar",
+            "formulas": [
+              {
+                "number_format": {
+                  "unit": { "type": "canonical_unit", "unit_name": "percent" }
+                },
+                "formula": "(query1 / 1000) / (query2 / 1000) * 100"
+              }
+            ],
+            "sort": {
+              "count": 2000,
+              "order_by": [{ "type": "formula", "index": 0, "order": "desc" }]
+            }
+          }
+        ],
+        "style": { "display": { "type": "stacked", "legend": "automatic" } }
+      },
+      "layout": { "x": 4, "y": 13, "width": 4, "height": 5 }
+    },
+    {
+      "id": 5109616305059524,
+      "definition": {
+        "title": "Buffering to User Correlation",
+        "title_size": "16",
+        "title_align": "left",
+        "show_legend": true,
+        "legend_layout": "auto",
+        "legend_columns": ["avg", "min", "max", "value", "sum"],
+        "time": { "type": "live", "unit": "hour", "value": 1 },
+        "type": "timeseries",
+        "requests": [
+          {
+            "formulas": [
+              { "alias": "Average Buffering Time", "formula": "query1" },
+              { "formula": "query2" },
+              { "alias": "Unique Users", "formula": "query2 * 500" }
+            ],
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "rum",
+                "search": { "query": "@type:action" },
+                "indexes": ["*"],
+                "group_by": [],
+                "compute": {
+                  "aggregation": "avg",
+                  "metric": "@context.buffering_time_ms"
+                },
+                "storage": "hot"
+              },
+              {
+                "name": "query2",
+                "data_source": "rum",
+                "search": { "query": "@type:action" },
+                "indexes": ["*"],
+                "group_by": [],
+                "compute": {
+                  "aggregation": "cardinality",
+                  "metric": "@context.user_id"
+                },
+                "storage": "hot"
+              }
+            ],
+            "response_format": "timeseries",
+            "style": {
+              "palette": "dog_classic",
+              "order_by": "values",
+              "order_reverse": false,
+              "line_type": "solid",
+              "line_width": "normal"
+            },
+            "display_type": "line"
+          }
+        ]
+      },
+      "layout": { "x": 8, "y": 14, "width": 4, "height": 4 }
+    },
+    {
+      "id": 399416593008714,
+      "definition": {
+        "title": "IVS Player Errors",
+        "title_size": "16",
+        "title_align": "left",
+        "requests": [
+          {
+            "response_format": "event_list",
+            "query": {
+              "data_source": "issue_stream",
+              "query_string": "",
+              "indexes": []
+            },
+            "columns": [
+              { "field": "details", "width": "auto" },
+              { "field": "count", "width": "auto" },
+              { "field": "volume", "width": "auto" }
+            ]
+          }
+        ],
+        "type": "list_stream"
+      },
+      "layout": { "x": 0, "y": 18, "width": 12, "height": 3 }
+    }
+  ],
+  "template_variables": [],
+  "layout_type": "ordered",
+  "notify_list": [],
+  "reflow_type": "fixed"
+}
